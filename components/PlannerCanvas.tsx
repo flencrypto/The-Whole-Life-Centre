@@ -154,16 +154,14 @@ function NorthArrow() {
 }
 
 export default function PlannerCanvas() {
-  const {
-    getCurrentProject,
-    selectedFacilityId,
-    selectFacility,
-    updateFacility,
-    showGrid,
-    showLabels,
-  } = useStore();
-
-  const project = getCurrentProject();
+  const project = useStore((s) =>
+    s.projects.find((p) => p.projectId === s.currentProjectId) ?? null
+  );
+  const selectedFacilityId = useStore((s) => s.selectedFacilityId);
+  const selectFacility = useStore((s) => s.selectFacility);
+  const updateFacility = useStore((s) => s.updateFacility);
+  const showGrid = useStore((s) => s.showGrid);
+  const showLabels = useStore((s) => s.showLabels);
   const containerRef = useRef<HTMLDivElement>(null);
   const [stageSize, setStageSize] = useState({ width: 800, height: 600 });
   const [scale, setScale] = useState(1);

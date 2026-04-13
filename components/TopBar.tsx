@@ -5,25 +5,15 @@ import { useStore } from '@/lib/store';
 import { ArrowLeft, Save, Grid3X3, Tag, Map, Download, Wand2, Leaf } from 'lucide-react';
 
 export default function TopBar() {
-  const {
-    getCurrentProject,
-    activeScreen,
-    setScreen,
-    showGrid,
-    showLabels,
-    toggleGrid,
-    toggleLabels,
-  } = useStore((s) => ({
-    getCurrentProject: s.getCurrentProject,
-    activeScreen: s.activeScreen,
-    setScreen: s.setScreen,
-    showGrid: s.showGrid,
-    showLabels: s.showLabels,
-    toggleGrid: s.toggleGrid,
-    toggleLabels: s.toggleLabels,
-  }));
-
-  const project = getCurrentProject();
+  const project = useStore((s) =>
+    s.projects.find((p) => p.projectId === s.currentProjectId) ?? null
+  );
+  const activeScreen = useStore((s) => s.activeScreen);
+  const showGrid = useStore((s) => s.showGrid);
+  const showLabels = useStore((s) => s.showLabels);
+  const setScreen = useStore((s) => s.setScreen);
+  const toggleGrid = useStore((s) => s.toggleGrid);
+  const toggleLabels = useStore((s) => s.toggleLabels);
   if (!project) return null;
 
   const tabs: { id: typeof activeScreen; label: string; icon: React.ReactNode }[] = [

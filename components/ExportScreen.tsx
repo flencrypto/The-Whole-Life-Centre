@@ -6,8 +6,10 @@ import TopBar from './TopBar';
 import { Download, FileJson, FileText, Image as ImageIcon, Check } from 'lucide-react';
 
 export default function ExportScreen() {
-  const { getCurrentProject, updateProject } = useStore();
-  const project = getCurrentProject();
+  const project = useStore((s) =>
+    s.projects.find((p) => p.projectId === s.currentProjectId) ?? null
+  );
+  const updateProject = useStore((s) => s.updateProject);
   const [exported, setExported] = useState<Record<string, boolean>>({});
 
   if (!project) return null;

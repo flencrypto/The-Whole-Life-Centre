@@ -21,8 +21,10 @@ const RENDER_MODES = [
 ];
 
 export default function RenderScreen() {
-  const { getCurrentProject, updateProject } = useStore();
-  const project = getCurrentProject();
+  const project = useStore((s) =>
+    s.projects.find((p) => p.projectId === s.currentProjectId) ?? null
+  );
+  const updateProject = useStore((s) => s.updateProject);
   const [prompt, setPrompt] = useState('');
   const [copied, setCopied] = useState(false);
 

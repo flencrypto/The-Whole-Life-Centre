@@ -20,8 +20,13 @@ const SUPPORT_LEVELS = ['low', 'medium', 'high', 'specialist'] as const;
 const ZONE_KEYS = Object.keys(ZONE_LABELS) as Array<keyof typeof ZONE_LABELS>;
 
 export default function FacilityInspector() {
-  const { getSelectedFacility, updateFacility, deleteFacility } = useStore();
-  const facility = getSelectedFacility();
+  const facility = useStore((s) => {
+    if (!s.selectedFacilityId || !s.currentProjectId) return null;
+    const project = s.projects.find((p) => p.projectId === s.currentProjectId);
+    return project?.facilities.find((f) => f.id === s.selectedFacilityId) ?? null;
+  });
+  const updateFacility = useStore((s) => s.updateFacility);
+  const deleteFacility = useStore((s) => s.deleteFacility);
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
