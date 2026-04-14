@@ -20,7 +20,11 @@ const CATEGORY_ORDER: FacilityCategory[] = [
 ];
 
 export default function FacilityPalette() {
-  const { addFacility, getCurrentProject } = useStore();
+  const addFacility = useStore((s) => s.addFacility);
+  const siteBoundary = useStore((s) => {
+    const project = s.projects.find((p) => p.projectId === s.currentProjectId);
+    return project?.siteBoundary ?? null;
+  });
   const [search, setSearch] = useState('');
   const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
 
@@ -31,9 +35,8 @@ export default function FacilityPalette() {
   function handleAdd(type: string) {
     const template = FACILITY_TEMPLATES.find((t) => t.type === type);
     if (!template) return;
-    const project = getCurrentProject();
-    const cx = project ? project.siteBoundary.width / 2 - template.defaultWidth / 2 : 560;
-    const cy = project ? project.siteBoundary.height / 2 - template.defaultHeight / 2 : 360;
+    const cx = siteBoundary ? siteBoundary.width / 2 - template.defaultWidth / 2 : 560;
+    const cy = siteBoundary ? siteBoundary.height / 2 - template.defaultHeight / 2 : 360;
     addFacility({
       id: uuidv4(),
       type: template.type,

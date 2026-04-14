@@ -6,8 +6,11 @@ import { Project } from '@/lib/types';
 import { PlusCircle, FolderOpen, Upload, Trash2, Calendar, Building2, Leaf } from 'lucide-react';
 
 export default function Dashboard() {
-  const { projects, createProject, openProject, deleteProject, importProject } =
-    useStore();
+  const projects = useStore((s) => s.projects);
+  const createProject = useStore((s) => s.createProject);
+  const openProject = useStore((s) => s.openProject);
+  const deleteProject = useStore((s) => s.deleteProject);
+  const importProject = useStore((s) => s.importProject);
   const [showNewModal, setShowNewModal] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [useTemplate, setUseTemplate] = useState(true);

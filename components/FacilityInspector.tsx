@@ -30,19 +30,22 @@ export default function FacilityInspector() {
 
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  function update(changes: Partial<Facility>) {
-    if (!facility) return;
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      updateFacility(facility.id, changes);
-    }, 150);
-  }
-
+  // Clear any pending debounced update when the selected facility changes so
+  // a stale timer cannot apply changes to the previously-selected facility.
   useEffect(() => {
     return () => {
       if (debounceRef.current) clearTimeout(debounceRef.current);
     };
-  }, []);
+  }, [facility?.id]);
+
+  function update(changes: Partial<Facility>) {
+    if (!facility) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    const facilityId = facility.id;
+    debounceRef.current = setTimeout(() => {
+      updateFacility(facilityId, changes);
+    }, 150);
+  }
 
   if (!facility) {
     return (

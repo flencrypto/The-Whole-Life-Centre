@@ -7,7 +7,7 @@ import RenderScreen from '@/components/RenderScreen';
 import ExportScreen from '@/components/ExportScreen';
 
 export default function Home() {
-  const { activeScreen } = useStore();
+  const activeScreen = useStore((s) => s.activeScreen);
 
   if (activeScreen === 'planner') return <PlannerScreen />;
   if (activeScreen === 'render') return <RenderScreen />;

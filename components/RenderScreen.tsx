@@ -30,8 +30,11 @@ export default function RenderScreen() {
 
   useEffect(() => {
     if (project) setPrompt(generatePrompt(project));
+    // Depend on the facilities array and render settings so the prompt updates
+    // whenever facilities are added/moved/renamed or settings change.
+    // The full project object is intentionally excluded to avoid redundant triggers.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project?.projectId, project?.renderSettings]);
+  }, [project?.projectId, project?.facilities, project?.renderSettings]);
 
   if (!project) return null;
 

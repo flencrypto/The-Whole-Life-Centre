@@ -162,6 +162,7 @@ export default function PlannerCanvas() {
   const updateFacility = useStore((s) => s.updateFacility);
   const showGrid = useStore((s) => s.showGrid);
   const showLabels = useStore((s) => s.showLabels);
+  const visibleLayers = useStore((s) => s.visibleLayers);
   const containerRef = useRef<HTMLDivElement>(null);
   const [stageSize, setStageSize] = useState({ width: 800, height: 600 });
   const [scale, setScale] = useState(1);
@@ -263,12 +264,13 @@ export default function PlannerCanvas() {
         </Layer>
 
         <Layer>
-          {project.facilities.map((facility) => (
+          {/* Facilities layer — hidden when 'buildings' layer is toggled off */}
+          {visibleLayers.includes('buildings') && project.facilities.map((facility) => (
             <FacilityShape
               key={facility.id}
               facility={facility}
               isSelected={selectedFacilityId === facility.id}
-              showLabel={showLabels}
+              showLabel={showLabels && visibleLayers.includes('labels')}
               onSelect={() => selectFacility(facility.id)}
               onDragEnd={(x, y) => updateFacility(facility.id, { x, y })}
               onTransformEnd={(attrs) => updateFacility(facility.id, attrs)}

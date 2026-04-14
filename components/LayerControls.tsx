@@ -18,8 +18,12 @@ const LAYER_DEFS = [
 ];
 
 export default function LayerControls() {
-  const { visibleLayers, toggleLayer, showGrid, toggleGrid, showLabels, toggleLabels } =
-    useStore();
+  const visibleLayers = useStore((s) => s.visibleLayers);
+  const toggleLayer = useStore((s) => s.toggleLayer);
+  const showGrid = useStore((s) => s.showGrid);
+  const toggleGrid = useStore((s) => s.toggleGrid);
+  const showLabels = useStore((s) => s.showLabels);
+  const toggleLabels = useStore((s) => s.toggleLabels);
 
   return (
     <div className="bg-white border border-stone-200 rounded-xl shadow-lg w-52 overflow-hidden">

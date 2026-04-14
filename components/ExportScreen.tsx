@@ -34,6 +34,13 @@ export default function ExportScreen() {
   }
 
   function handleExportCSV() {
+    // Quote a CSV field if it contains commas, double-quotes, or newlines.
+    function csvEscape(value: string | number): string {
+      if (typeof value === 'number') return String(value);
+      if (/[",\r\n]/.test(value)) return `"${value.replace(/"/g, '""')}"`;
+      return value;
+    }
+
     const headers = [
       'Name',
       'Type',
@@ -47,16 +54,16 @@ export default function ExportScreen() {
       'Description',
     ];
     const rows = p.facilities.map((f) => [
-      f.name,
-      f.type,
-      f.zone,
-      f.capacity,
-      f.supportLevel,
-      Math.round(f.x),
-      Math.round(f.y),
-      Math.round(f.width),
-      Math.round(f.height),
-      `"${f.description.replace(/"/g, '""')}"`,
+      csvEscape(f.name),
+      csvEscape(f.type),
+      csvEscape(f.zone),
+      csvEscape(f.capacity),
+      csvEscape(f.supportLevel),
+      csvEscape(Math.round(f.x)),
+      csvEscape(Math.round(f.y)),
+      csvEscape(Math.round(f.width)),
+      csvEscape(Math.round(f.height)),
+      csvEscape(f.description),
     ]);
     const csv = [headers.join(','), ...rows.map((r) => r.join(','))].join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
